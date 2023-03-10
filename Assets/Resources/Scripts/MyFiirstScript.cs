@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /*
@@ -27,14 +28,23 @@ public class MyFiirstScript : MonoBehaviour {
     public GameObject myGameObject;
     */
 
+    /*
     public float myTime = 0;
     public float myTestFloat;
     public float mySpeed;
 
     public int myIntMin, myIntMax;
+    */
+
+    public int intMin, intMax;
+    public float myFloat;
+    public float speed;
+    public bool limitReached = true;
+    public GameObject myQuad;
+    public Vector2 position;
 
     void Start() {
-        
+        myQuad.transform.position = new Vector2(intMin, myQuad.transform.position.y);
     }
 
 
@@ -43,9 +53,28 @@ public class MyFiirstScript : MonoBehaviour {
         // print(Random.Range(1f, 10f)); // inclusive & exclusive
         // myTestFloat = Mathf.MoveTowards(myTestFloat, myIntMax, mySpeed * Time.deltaTime); // contador: arranca del min, va a la velocidad de mySpeed y llega hasta el max
         // si pongo speed 2 va a ir al doble
-        myTestFloat = Mathf.MoveTowards(myTestFloat, myIntMax, mySpeed * Time.deltaTime); // contador: arranca del min, va a la velocidad de mySpeed y llega hasta el max
+        myFunction();
 
 
+
+    }
+
+    public void myFunction() {
+        if (limitReached) {
+            myFloat = Mathf.MoveTowards(myFloat, intMax, speed * Time.deltaTime);
+
+            if (myFloat >= intMax-0.001f) {
+                limitReached = false;
+            }
+        } else if (!limitReached) {
+            myFloat = Mathf.MoveTowards(myFloat, intMin, intMax * Time.deltaTime);
+
+            if (myFloat <= intMin+0.001f) {
+                limitReached = true;
+            }
+        }
+        position = new Vector2(myFloat, myQuad.transform.position.y);
+        myQuad.transform.position = position;
     }
 
 }

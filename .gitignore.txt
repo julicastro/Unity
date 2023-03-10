@@ -1,0 +1,8 @@
+# Excluir archivos de texto
+*.txt
+
+# Excluir la carpeta de configuración
+/Library/
+
+# Excluir archivos de registro
+*.log
