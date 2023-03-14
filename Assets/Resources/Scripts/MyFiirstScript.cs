@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 /*
  * Integer - for counting, indexing, id
@@ -16,6 +17,7 @@ using UnityEngine;
  */
 public class MyFiirstScript : MonoBehaviour {
 
+    /*
     public int myInt = 1; 
     public float myFirstFloat = 0.0f;
     public string mySting = "Hola";
@@ -38,13 +40,26 @@ public class MyFiirstScript : MonoBehaviour {
     public GameObject myQuad;
     public GameObject phineas;
     public Vector2 position;
+    */
 
+    /* for loop */
+    /*
     public GameObject myParentObject;
+    public int searchingID;
+    public string myString;
+    public Text myText;
+    */
+
+    public GameObject myQuad;
+    public int Origin, Limit;
+    public GameObject instanceParentQuad;
+    public float blinkTime, speed;
 
     void Start() {
+        /*
         myQuad.transform.position = new Vector2(intMin, myQuad.transform.position.y);
         phineas.transform.position = new Vector2(intMin, phineas.transform.position.y);
-        
+        */
     }
 
 
@@ -56,9 +71,13 @@ public class MyFiirstScript : MonoBehaviour {
         // myFunction();
         // myFunctionPhineas();
         // print(myParentObject.transform.childCount);
-        myForLoop1();
+        // myForLoop1();
+        // myForLoop2();
+        intantiateMyQuadNow();
+        blink();
     }
 
+    /*
     public void myFunction() {
         if (limitReached) {
             myFloat = Mathf.MoveTowards(myFloat, intMax, speed * Time.deltaTime);
@@ -99,10 +118,52 @@ public class MyFiirstScript : MonoBehaviour {
             myParentObject.transform.GetChild(i).transform.GetComponent<ObjectInfo>().myID = i * 3;
             myParentObject.transform.GetChild(i).transform.GetComponent<ObjectInfo>().myName = ("Child + " + id).ToString();
             myParentObject.transform.GetChild(i).transform.GetComponent<ObjectInfo>().attack = i + 100;
-
-
         }
     }
+    */
+    /*
+    public void myForLoop2() {
+        for (int i = 0; i < myParentObject.transform.childCount; i++) {
+            if (searchingID == myParentObject.transform.GetChild(i).transform.GetComponent<ObjectInfo>().myID) {
+                myString = "Child ID Found " + myParentObject.transform.GetChild(i).transform.GetComponent<ObjectInfo>().myID +
+                    " and the name is " + myParentObject.transform.GetChild(i).transform.GetComponent<ObjectInfo>().myName;
+                myText.text = myString;
+            } else {
+                myText.text = "not found";
+            }
+        }
+    }
+    */
+
+    public void blink() {
+
+        blinkTime = Mathf.MoveTowards(blinkTime, instanceParentQuad.transform.childCount, speed * Time.deltaTime);
+        for (int i = 0; i < instanceParentQuad.transform.childCount; i++) {
+            if (i == (int) blinkTime) {
+                instanceParentQuad.transform.GetChild(i).transform.GetChild(1).gameObject.SetActive(true);
+            } else if (i != (int) blinkTime) {
+                instanceParentQuad.transform.GetChild(i).transform.GetChild(1).gameObject.SetActive(false);
+            }
+        }
+        if (blinkTime >= instanceParentQuad.transform.childCount) {
+            blinkTime = 0;
+        }
+    
+    }
+
+    public void intantiateMyQuadNow() {
+        for (int i = Origin; i <= Limit; i++) {
+            // distancia de 2 
+            if (i % 2 == 0) {
+                GameObject newQuad = Instantiate(myQuad);
+                newQuad.transform.position = new Vector2(i, 0);
+                newQuad.transform.SetParent(instanceParentQuad.transform);
+                newQuad.transform.GetChild(1).gameObject.SetActive(false);
+            }
+        }
+    }
+
+
 
 
 
